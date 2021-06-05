@@ -14,7 +14,7 @@ function loadImage(src) {
     img.onerror = (err) => {
       reject(err);
     };
-    img.src = '/dist' + src;
+    img.src = 'dist' + src;
   });
 }
 
