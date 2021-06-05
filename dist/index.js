@@ -35,39 +35,72 @@ window.addEventListener('gamepaddisconnected', (e) => {
   selectedGamepad = null;
 });
 
+const keys = {};
+window.addEventListener('keydown', (e) => {
+  keys[e.key] = true;
+});
+window.addEventListener('keyup', (e) => {
+  delete keys[e.key];
+});
+
 function onDraw() {
+  const direction = {};
+  // gamepad input
   if (selectedGamepad!==null) {
     const gp = navigator.getGamepads()[selectedGamepad];
-    if (gp.buttons[12].pressed || Math.min(0.0, gp.axes[1] + CONTROLLER_DEADZONE) < 0) {
-      // up
-      character.y -= 1;
+    if ((gp.buttons[12].pressed) || Math.min(0.0, gp.axes[1] + CONTROLLER_DEADZONE) < 0) {
+      direction.up = true;
     }
-    if (gp.buttons[13].pressed || Math.max(0.0, gp.axes[1] - CONTROLLER_DEADZONE) > 0) {
-      // down
-      character.y += 1;
+    if ((gp.buttons[13].pressed) || Math.max(0.0, gp.axes[1] - CONTROLLER_DEADZONE) > 0) {
+      direction.down = true;
     }
-    if (gp.buttons[14].pressed || Math.min(0.0, gp.axes[0] + CONTROLLER_DEADZONE) < 0) {
-      // left
-      character.x -= 1;
-      character.ox = 1;
+    if ((gp.buttons[14].pressed) || Math.min(0.0, gp.axes[0] + CONTROLLER_DEADZONE) < 0) {
+      direction.left = true;
     }
-    if (gp.buttons[15].pressed || Math.max(0.0, gp.axes[0] - CONTROLLER_DEADZONE) > 0) {
-      // right
-      character.x += 1;
-      character.ox = -1;
+    if ((gp.buttons[15].pressed) || Math.max(0.0, gp.axes[0] - CONTROLLER_DEADZONE) > 0) {
+      direction.right = true;
     }
-    if (character.y < character.cy) {
-      character.y = character.cy;
-    }
-    if (character.y > canvas.height + character.cy) {
-      character.y = canvas.height + character.cy;
-    }
-    if (character.x < character.cx) {
-      character.x = character.cx;
-    }
-    if (character.x > canvas.width + character.cx) {
-      character.x = canvas.width + character.cx;
-    }
+  }
+  // keyboard input
+  if (keys['w'] || keys['ArrowUp']) {
+    direction.up = true;
+  }
+  if (keys['s'] || keys['ArrowDown']) {
+    direction.down = true;
+  }
+  if (keys['a'] || keys['ArrowLeft']) {
+    direction.left = true;
+  }
+  if (keys['d'] || keys['ArrowRight']) {
+    direction.right = true;
+  }
+
+  if (direction.up) {
+    character.y -= 1;
+  }
+  if (direction.down) {
+    character.y += 1;
+  }
+  if (direction.left) {
+    character.x -= 1;
+    character.ox = 1;
+  }
+  if (direction.right) {
+    character.x += 1;
+    character.ox = -1;
+  }
+
+  if (character.y < character.cy) {
+    character.y = character.cy;
+  }
+  if (character.y > canvas.height + character.cy) {
+    character.y = canvas.height + character.cy;
+  }
+  if (character.x < character.cx) {
+    character.x = character.cx;
+  }
+  if (character.x > canvas.width + character.cx) {
+    character.x = canvas.width + character.cx;
   }
   ctx.clearRect(0,0,canvas.width, canvas.height);
 
