@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+        background: #222;
+      }
+      #main {
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-crisp-edges;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        border: 1px solid #000;
+      }
+      #walkmap {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="walkmap" height="540" width="960"></canvas>
+    <canvas id="main" height="540" width="960"></canvas>
+    <script src="/dist/index.js" type="text/javascript"></script>
+  </body>
+</html>
